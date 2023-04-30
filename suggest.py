@@ -69,7 +69,7 @@ def suggest(title):
     sims = pd.Series(cos_sim[idx]).sort_values(ascending=False)
     top3 = list(sims.iloc[1:4].index)
     # print(top3)
-    print("\n\tRecommended movies:")
+    print("\nRecommended movies:\n")
     for i in top3:
         movie_title = df.iloc[i]['Series_Title']
         movies.append(movie_title)

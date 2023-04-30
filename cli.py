@@ -1,33 +1,50 @@
+import csv
+
 from suggest import suggest
 from user_list import user_list
 
 print('Welcome to MovieMail! Please choose from the following options:')
 
 while True:
-    user_in = int(input('\n\t1: View Movie List\n\t2: Add Movie\n\t3: Delete Movie\n\t4: Give Me a Suggestion\n\t5: Exit\n'))
+    print('\n----------------------------------------------------------------------')
+    user_in = int(input('\n1: View Movie List\n2: Add Movie\n3: Delete Movie\n4: Give Me a Suggestion\n5: Exit\n\n--> '))
+    print('----------------------------------------------------------------------\n')
     if user_in == 1:
-        for i in user_list:
-            print(f'\t- {i}')
+        print('Your Movie List:\n')
+        with open('movie_list.csv', newline='') as f:
+            reader = csv.reader(f)
+            for movie in reader:
+                print('\n'.join(movie))
     elif user_in == 2:
-        movie_in = input('Enter movie: ')
-        if movie_in in user_list:
+        movie_in = input('Enter movie: ').strip()
+        with open('movie_list.csv', 'r') as f:
+            reader = csv.reader(f)
+            movies = [row[0] for row in reader]
+        if movie_in in movies:
             print('That movie is already in the list!')
         else:
-            user_list.append(movie_in)
+            with open('movie_list.csv', 'a', newline='') as f:
+                write = csv.writer(f)
+                write.writerow([movie_in])
     elif user_in == 3:
         movie_out = input('Enter movie: ')
-        if movie_out not in user_list:
-            print('That movie is not in the list!')
-        else:
-            user_list.remove(movie_out)
+        with open('movie_list.csv', 'r') as f:
+            reader = csv.reader(f)
+            movies = [row[0] for row in reader]
+            if movie_out not in movies:
+                print('That movie is not in the list!')
+            else:
+                movies.remove(movie_out)
+                with open('movie_list.csv', 'w', newline='') as f:
+                    writer = csv.writer(f)
+                    for movie in movies:
+                        writer.writerow([movie])
     elif user_in == 4:
-        movie_sugg = input('Enter movie: ')
+        movie_sugg = input('Enter movie: \n')
         try:
             suggest(movie_sugg)
         except:
             print('Sorry no suggestions available!')
-        else:
-            suggest(movie_sugg)
     elif user_in == 5:
         break
     else:
