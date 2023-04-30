@@ -1,3 +1,6 @@
 venv
 stopwords
 .ipynb_checkpoints
+webserver_config.py
+airflow.cfg
+airflow.db
