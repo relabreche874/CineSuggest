@@ -62,18 +62,31 @@ cos_sim = cosine_similarity(feats, feats)
 index = pd.Series(df['Series_Title'])
 
 
-def suggest(title):
+def suggest_cli(title):
     movies = []
     idx = index[index == title].index[0]
     # print(idx)
     sims = pd.Series(cos_sim[idx]).sort_values(ascending=False)
     top3 = list(sims.iloc[1:4].index)
-    # print(top3)
+    print(top3)
     print("\nRecommended movies:\n")
     for i in top3:
         movie_title = df.iloc[i]['Series_Title']
         movies.append(movie_title)
         print(f'\t- {movie_title}')
+        # return movies
+
+def suggest_mail(title):
+    movies = []
+    idx = index[index == title].index[0]
+    sims = pd.Series(cos_sim[idx]).sort_values(ascending=False)
+    top3 = list(sims.iloc[1:4].index)
+    # print("\nRecommended movies:\n")
+    for i in top3:
+        movie_title = df.iloc[i]['Series_Title']
+        movies.append(movie_title)
+        suggested_movies = '\n'.join(movies)
+    return suggested_movies
 
 
 

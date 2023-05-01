@@ -4,3 +4,4 @@ stopwords
 webserver_config.py
 airflow.cfg
 airflow.db
+email_setup.py
