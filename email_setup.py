@@ -1,5 +1,5 @@
 import csv
-import pandas as pd
+import time
 from suggest import suggest_mail
 from email.message import EmailMessage
 import smtplib
@@ -21,14 +21,31 @@ receive_address = 'bobathetea719@gmail.com'
 subject = 'Here Are Your Movie Recommendations for Today!'
 body = f'Here are your movie suggestions for today because you watched {movies[0]}!\n\n{suggest_mail(movies[0])}'
 
-em = EmailMessage()
-em['From'] = send_address
-em['To'] = receive_address
-em['Subject'] = subject
-em.set_content(body)
+# em = EmailMessage()
+# em['From'] = send_address
+# em['To'] = receive_address
+# em['Subject'] = subject
+# em.set_content(body)
 
 context = ssl.create_default_context()
 
 with smtplib.SMTP_SSL('smtp.gmail.com', 465, context=context) as smtp:
     smtp.login(send_address, password)
-    smtp.sendmail(send_address, receive_address, em.as_string())
+    # smtp.sendmail(send_address, receive_address, em.as_string())
+
+    idx = 0
+    while idx < len(movies):
+        title = movies[idx]
+        body = f'Here are your movie suggestions for today because you watched {title}!\n\n{suggest_mail(title)}'
+
+        em = EmailMessage()
+        em['From'] = send_address
+        em['To'] = receive_address
+        em['Subject'] = subject
+        em.set_content(body)
+
+        smtp.sendmail(send_address, receive_address, em.as_string())
+
+        idx += 1
+        if idx < len(movies):
+            time.sleep(180)

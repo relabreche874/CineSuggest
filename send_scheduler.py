@@ -1,4 +1,5 @@
 import suggest
+
 import schedule, time
 
 
@@ -10,4 +11,4 @@ schedule.every(5).seconds.do(send_mail)
 
 while 1:
     schedule.run_pending()
-    time.sleep(1)
+    time.sleep()
